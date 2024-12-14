@@ -44,27 +44,49 @@
     text-align: center;
   }
   
-  .status-actions button {
-    padding: 8px 15px;
-    background-color: #4caf50;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px;
-  }
-  
-  .status-actions button:hover {
-    background-color: #45a049;
-  }
-  
-  .status-actions button:active {
-    background-color: #388e3c;
-  }
-  
-  button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+  /* Accept button styles */
+.status-actions .accept {
+  padding: 8px 15px;
+  background-color: #4caf50; /* Green */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+}
+
+.status-actions .accept:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.status-actions .accept:active {
+  background-color: #388e3c; /* Even darker green when active */
+}
+
+/* Reject button styles */
+.status-actions .reject {
+  padding: 8px 15px;
+  background-color: #f44336; /* Red */
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.status-actions .reject:hover {
+  background-color: #e53935; /* Darker red on hover */
+}
+
+.status-actions .reject:active {
+  background-color: #d32f2f; /* Even darker red when active */
+}
+
+/* Disabled button styles */
+button[disabled] {
+  background-color: #ccc; /* Gray for disabled state */
+  cursor: not-allowed;
+}
+
   

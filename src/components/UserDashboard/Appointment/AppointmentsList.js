@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AppointmentsList.module.css";
 
+
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
 
@@ -45,6 +46,7 @@ const Appointments = () => {
               <th>Appointment Date</th>
               <th>Reason</th>
               <th>Status</th>
+              <th>Payment Mode</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -61,6 +63,19 @@ const Appointments = () => {
                     }`}
                   >
                     {appointment.status || "PENDING"}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    className={`${styles.paymentStatus} ${
+                      appointment.paymentmode === "ONLINE_PAY"
+                        ? styles.onlinePay
+                        : styles.cash
+                    }`}
+                  >
+                    {appointment.paymentmode === "ONLINE_PAY"
+                      ? "Online Pay"
+                      : "Cash"}
                   </span>
                 </td>
                 <td>
@@ -83,3 +98,4 @@ const Appointments = () => {
 };
 
 export default Appointments;
+

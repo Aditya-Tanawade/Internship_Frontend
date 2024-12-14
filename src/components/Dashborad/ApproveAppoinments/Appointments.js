@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
 
@@ -49,6 +51,7 @@ const Appointments = () => {
               <th>Appointment Date</th>
               <th>Reason</th>
               <th>Remarks</th>
+              <th>Payment Mode</th> {/* New Payment Mode Column */}
               <th>Actions</th>
             </tr>
           </thead>
@@ -64,6 +67,20 @@ const Appointments = () => {
                 <td>{appointment.appointmentDate}</td>
                 <td>{appointment.reason}</td>
                 <td>{appointment.remarks || "N/A"}</td>
+                {/* Display payment mode */}
+                <td>
+                  <span
+                    className={`${
+                      appointment.paymentmode === "ONLINE_PAY"
+                        ? "online-pay"
+                        : "cash"
+                    }`}
+                  >
+                    {appointment.paymentmode === "ONLINE_PAY"
+                      ? "Online Pay"
+                      : "Cash"}
+                  </span>
+                </td>
                 <td>
                   <button
                     onClick={() => markAsCompleted(appointment.id)}

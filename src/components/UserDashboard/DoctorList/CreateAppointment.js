@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import './CreateAppointment.css'; // Ensure this path is correct
+
+import React, { useState, useEffect } from "react";
+import './CreateAppointment.css';
 
 const CreateAppointment = ({ doctorEmail, doctorAvailability, onBack }) => {
   const [formData, setFormData] = useState({
-    doctorEmail: doctorEmail, // Pre-fill with the passed doctor's email
+    doctorEmail: doctorEmail,
     appointmentDate: "",
     reason: "",
     remarks: "",
+    paymentmode: "ONLINE_PAY",
   });
 
   const [error, setError] = useState(null);
@@ -14,62 +16,70 @@ const CreateAppointment = ({ doctorEmail, doctorAvailability, onBack }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if appointment date is within doctor's available range
     const appointmentDate = new Date(formData.appointmentDate);
     const availableFromDate = new Date(doctorAvailability.availableFromDate);
     const availableEndDate = new Date(doctorAvailability.availableEndDate);
 
     if (appointmentDate < availableFromDate || appointmentDate > availableEndDate) {
-      setError(`Appointment date must be between Doctor Schedule That is ${doctorAvailability.availableFromDate} and ${doctorAvailability.availableEndDate}.`);
+      setError(`Appointment date must be between ${doctorAvailability.availableFromDate} and ${doctorAvailability.availableEndDate}.`);
       return;
     }
 
-    const appointmentData = {
-      doctorEmail: formData.doctorEmail,
-      appointmentDate: formData.appointmentDate,
-      reason: formData.reason,
-      remarks: formData.remarks,
-    };
-
-    fetch("http://localhost:8080/appointments/book", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(appointmentData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSuccessMessage("Appointment created successfully!");
-        setFormData({
-          doctorEmail: doctorEmail, // Reset doctor email
-          appointmentDate: "",
-          reason: "",
-          remarks: "",
-        });
-        setError(null);
-        setTimeout(() => setSuccessMessage(null), 3000);
-      })
-      .catch((error) => {
-        console.error("Error creating appointment:", error);
-        setError("Failed to create appointment. Please try again.");
-        setSuccessMessage(null);
+    try {
+      const response = await fetch("http://localhost:8080/appointments/book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.text(); // Backend may return plain text or URL
+
+      if (formData.paymentmode === "CASH") {
+        setSuccessMessage("Appointment booked successfully");
+        setTimeout(() => setSuccessMessage(null), 3000);
+      } else if (formData.paymentmode === "ONLINE_PAY") {
+        window.location.href = data; // Redirect to the payment URL
+      } else {
+        setError("Invalid payment mode selected.");
+      }
+
+      setFormData({
+        doctorEmail: doctorEmail,
+        appointmentDate: "",
+        reason: "",
+        remarks: "",
+        paymentmode: "ONLINE_PAY",
+      });
+      setError(null);
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      setError("Failed to create appointment. Please try again.");
+      setSuccessMessage(null);
+    }
   };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const success = queryParams.get("success");
+    const appointmentId = queryParams.get("appointmentId");
+
+    if (success === "true" && appointmentId) {
+      setSuccessMessage(`Payment successful for appointment ID: ${appointmentId}`);
+      setTimeout(() => setSuccessMessage(null), 5000);
+    }
+  }, []);
 
   return (
     <div className="create-appointment-container">
@@ -80,13 +90,7 @@ const CreateAppointment = ({ doctorEmail, doctorAvailability, onBack }) => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="doctorEmail">Doctor Email:</label>
-          <input
-            type="email"
-            id="doctorEmail"
-            name="doctorEmail"
-            value={formData.doctorEmail}
-            readOnly // Make the field read-only
-          />
+          <input type="email" id="doctorEmail" name="doctorEmail" value={formData.doctorEmail} readOnly />
         </div>
 
         <div className="form-group">
@@ -123,13 +127,26 @@ const CreateAppointment = ({ doctorEmail, doctorAvailability, onBack }) => {
           />
         </div>
 
+        <div className="form-group">
+          <label htmlFor="paymentmode">Payment Mode:</label>
+          <select
+            id="paymentmode"
+            name="paymentmode"
+            value={formData.paymentmode}
+            onChange={handleChange}
+            required
+          >
+            <option value="ONLINE_PAY">Online Payment</option>
+            <option value="CASH">Cash</option>
+          </select>
+        </div>
+
         <button type="submit">Book Appointment</button>
-        <button type="button" onClick={onBack} className="back-button">
-          Back to Doctor List
-        </button>
+        <button type="button" onClick={onBack} className="back-button">Back to Doctor List</button>
       </form>
     </div>
   );
 };
 
 export default CreateAppointment;
+
