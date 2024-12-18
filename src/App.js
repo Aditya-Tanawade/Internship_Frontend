@@ -12,6 +12,7 @@ import EditProfile from './components/Dashborad/EditDoctorProfile/EditProfile';
 import YourSchedule from './components/Dashborad/UpdateAvialblity/YourSchedule';
 import PatientDashboard from './components/UserDashboard/PatientDashboard/PatientDashboard';
 import Paymentsuccess from './components/UserDashboard/Paymentsucess';
+import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 
 
 
@@ -37,6 +38,9 @@ function App() {
 
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}/>
 
+        <Route path="/admin-dashboard" element={<AdminDashboard />}/>
+
+
         <Route path="/edit-profile" element={<EditProfile />} />
 
         <Route path="/yourSchedule" element={<YourSchedule />} />
@@ -45,12 +49,6 @@ function App() {
 
 
         <Route path="/payment-success" element={<Paymentsuccess />} />
-
-
-
-
-
-
 
 
       </Routes>
