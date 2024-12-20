@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./PatientDashboard.css";
-import EditPatientProfile from "../EditProfile/EditPatientProfile";
-import AppointmentsList from '../Appointment/AppointmentsList';
+import React, { useEffect, useState } from "react";
+import AppointmentsList from "../Appointment/AppointmentsList";
 import DoctorList from "../DoctorList/DoctorList";
-
+import EditPatientProfile from "../EditProfile/EditPatientProfile";
+import "./PatientDashboard.css";
+import Chatbot from "../../Chatbot/Chatbot";
 
 const PatientDashboard = () => {
-  const [selectedMenu, setSelectedMenu] = useState("Dashboard");
+  const [selectedMenu, setSelectedMenu] = useState
+  ("Dashboard");
   const [userEmail, setUserEmail] = useState("");
   const [userProfile, setUserProfile] = useState({
     patientName: "",
@@ -17,6 +18,7 @@ const PatientDashboard = () => {
     age: "",
     address: "",
   });
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false); // State to toggle chatbot visibility
 
   // Function to fetch user's email
   const fetchUserEmail = () => {
@@ -53,6 +55,10 @@ const PatientDashboard = () => {
     setSelectedMenu(menu);
   };
 
+  const toggleChatbot = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
+
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
@@ -79,7 +85,9 @@ const PatientDashboard = () => {
           ].map((menu) => (
             <li
               key={menu}
-              className={selectedMenu === menu ? "menu-item active" : "menu-item"}
+              className={
+                selectedMenu === menu ? "menu-item active" : "menu-item"
+              }
               onClick={() => handleMenuClick(menu)}
             >
               {menu}
@@ -104,7 +112,6 @@ const PatientDashboard = () => {
           </ul>
         </div>
 
-      
         {/* Content */}
         <div className="cards-container">
           {selectedMenu === "Dashboard" && (
@@ -133,17 +140,15 @@ const PatientDashboard = () => {
             />
           )}
 
-
           {selectedMenu === "Doctors List" && <DoctorList />} {/* Render Doctor List */}
 
           {selectedMenu === "My Appointments" && <AppointmentsList />} {/* Render Appointments List */}
 
-
-          {/* If menu is not Dashboard, Edit Profile, Appointments or Doctor List */}
+          {/* Other Menus */}
           {selectedMenu !== "Dashboard" &&
             selectedMenu !== "Edit Profile" &&
-            selectedMenu !== "My Appointments" && 
-            selectedMenu !== "Doctors List" &&(
+            selectedMenu !== "My Appointments" &&
+            selectedMenu !== "Doctors List" && (
               <div className="dynamic-content">
                 <p>
                   Showing details for: <strong>{selectedMenu}</strong>
@@ -152,6 +157,44 @@ const PatientDashboard = () => {
             )}
         </div>
       </div>
+
+      {/* Chatbot Icon */}
+      <div
+        className="chatbot-icon"
+        onClick={toggleChatbot}
+        style={{
+          position: "fixed",
+          bottom: "20px",
+          right: "20px",
+          cursor: "pointer",
+          backgroundColor: "#007bff",
+          color: "white",
+          borderRadius: "50%",
+          width: "60px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          fontSize: "24px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+        }}
+      >
+        💬
+      </div>
+
+      {/* Chatbot Component */}
+      {isChatbotOpen && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "90px", // Adjusted to be above the chatbot open button
+            right: "20px",
+            zIndex: 1000,
+          }}
+        >
+          <Chatbot />
+        </div>
+      )}
     </div>
   );
 };
