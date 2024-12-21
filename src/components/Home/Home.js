@@ -8,7 +8,8 @@ const Home = () => {
         <ul>
           <li><a href="#" className='home-name'>E-Doctor</a></li>
           <li><a href="./">Home</a></li>
-          <li><a href="#">Feedback List</a></li>
+          {/* <li><a href="#">Feedback List</a></li> */}
+          <li><a href="./feedback-list">Feedback List</a></li>
           <li><a href="./WelcomePage">Login</a></li>
           <li><a href="/registration">Registration</a></li>
         </ul>

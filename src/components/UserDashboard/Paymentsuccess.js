@@ -88,3 +88,46 @@ const PaymentSuccess = () => {
 
 export default PaymentSuccess;
 
+// import React, { useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
+
+// const PaymentSuccess = () => {
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const queryParams = new URLSearchParams(window.location.search);
+//     const appointmentId = queryParams.get('appointmentId');
+//     const sessionId = queryParams.get('sessionId');
+
+//     if (appointmentId && sessionId) {
+//       // Call the backend to verify the payment and complete the appointment
+//       const verifyPayment = async () => {
+//         try {
+//           const response = await fetch('http://localhost:8080/appointments/payment-success?appointmentId=' + appointmentId + '&sessionId=' + sessionId);
+//           const data = await response.json();
+
+//           if (response.ok) {
+//             alert(data.message || 'Payment Successful. Appointment Booked!');
+//             //history.push('/appointments');  // Redirect to appointments list or home page
+//             navigate('/user-dashboard');
+//           } else {
+//             alert(data.message || 'Payment verification failed');
+//           }
+//         } catch (error) {
+//           alert('Error verifying payment!');
+//           console.error('Error:', error);
+//         }
+//       };
+
+//       verifyPayment();
+//     }
+//   }, [navigate]);
+
+//   return (
+//     <div>
+//       <h2>Processing Payment...</h2>
+//     </div>
+//   );
+// };
+
+// export default PaymentSuccess;

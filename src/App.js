@@ -11,8 +11,9 @@ import DoctorDashboard from './components/Dashborad/DoctorDashboard/DoctorDashbo
 import EditProfile from './components/Dashborad/EditDoctorProfile/EditProfile';
 import YourSchedule from './components/Dashborad/UpdateAvialblity/YourSchedule';
 import PatientDashboard from './components/UserDashboard/PatientDashboard/PatientDashboard';
-import Paymentsuccess from './components/UserDashboard/Paymentsucess';
-import AdminDashboard from './components/AdminDashboard/AdminDashboard';
+import Paymentsuccess from './components/UserDashboard/Paymentsuccess';
+import FeedbackListHomePage from './components/UserDashboard/FeedbackList/FeedbackListHomePage';
+
 
 
 
@@ -38,7 +39,7 @@ function App() {
 
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}/>
 
-        <Route path="/admin-dashboard" element={<AdminDashboard />}/>
+        {/* <Route path="/admin-dashboard" element={<AdminDashboard />}/> */}
 
 
         <Route path="/edit-profile" element={<EditProfile />} />
@@ -49,6 +50,11 @@ function App() {
 
 
         <Route path="/payment-success" element={<Paymentsuccess />} />
+
+        <Route path="/feedback-list" element={<FeedbackListHomePage />} /> 
+
+
+
 
 
       </Routes>

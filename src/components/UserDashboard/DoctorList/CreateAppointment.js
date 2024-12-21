@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import './CreateAppointment.css';
 
@@ -149,4 +148,3 @@ const CreateAppointment = ({ doctorEmail, doctorAvailability, onBack }) => {
 };
 
 export default CreateAppointment;
-

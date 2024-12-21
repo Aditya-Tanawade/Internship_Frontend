@@ -1,15 +1,19 @@
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import "./PatientDashboard.css";
+import EditPatientProfile from "../EditProfile/EditPatientProfile";
 import AppointmentsList from "../Appointment/AppointmentsList";
 import DoctorList from "../DoctorList/DoctorList";
-import EditPatientProfile from "../EditProfile/EditPatientProfile";
-import "./PatientDashboard.css";
-import Chatbot from "../../Chatbot/Chatbot";
+import Feedback from "../FeedbackList/Feedback";
+import Chatbot from "../Chatbot/Chatbot";
 
 const PatientDashboard = () => {
-  const [selectedMenu, setSelectedMenu] = useState
-  ("Dashboard");
+  const [selectedMenu, setSelectedMenu] = useState("Dashboard");
   const [userEmail, setUserEmail] = useState("");
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [userProfile, setUserProfile] = useState({
     patientName: "",
     mobileNo: "",
@@ -18,9 +22,11 @@ const PatientDashboard = () => {
     age: "",
     address: "",
   });
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false); // State to toggle chatbot visibility
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
-  // Function to fetch user's email
+  const socketUrl = "http://localhost:8080/ws";
+
+  // Fetch user's email
   const fetchUserEmail = () => {
     axios
       .get("http://localhost:8080/api/patient/get-welcome-email")
@@ -33,7 +39,7 @@ const PatientDashboard = () => {
       });
   };
 
-  // Function to fetch user's profile
+  // Fetch user's profile
   const fetchUserProfile = () => {
     axios
       .get("http://localhost:8080/api/patient/profile")
@@ -45,11 +51,68 @@ const PatientDashboard = () => {
       });
   };
 
+  // Fetch unread notifications
+  const fetchNotifications = useCallback(() => {
+    if (userEmail) {
+      axios
+        .get(`http://localhost:8080/notifications/${userEmail}`)
+        .then((response) => {
+          setNotifications(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching notifications:", error);
+        });
+    }
+  }, [userEmail]);
+
+  // Mark notification as read
+  const markAsRead = (id) => {
+    axios
+      .post(`http://localhost:8080/notifications/read/${id}`)
+      .then(() => {
+        setNotifications(notifications.filter((n) => n.id !== id));
+      })
+      .catch((error) =>
+        console.error("Error marking notification as read:", error)
+      );
+  };
+
+  // WebSocket for real-time notifications
+  useEffect(() => {
+    if (userEmail) {
+      const socket = new SockJS(socketUrl);
+      const stompClient = Stomp.over(socket);
+
+      stompClient.connect({}, () => {
+        stompClient.subscribe(`/topic/notifications/${userEmail}`, (message) => {
+          const newNotification = JSON.parse(message.body);
+          setNotifications((prevNotifications) => [
+            newNotification,
+            ...prevNotifications,
+          ]);
+        });
+      });
+
+      return () => {
+        if (stompClient) {
+          stompClient.disconnect();
+        }
+      };
+    }
+  }, [userEmail]);
+
   // Fetch data on component load
   useEffect(() => {
     fetchUserEmail();
     fetchUserProfile();
   }, []);
+
+  // Fetch notifications after email is available
+  useEffect(() => {
+    if (userEmail) {
+      fetchNotifications();
+    }
+  }, [userEmail, fetchNotifications]);
 
   const handleMenuClick = (menu) => {
     setSelectedMenu(menu);
@@ -74,15 +137,7 @@ const PatientDashboard = () => {
           </p>
         </div>
         <ul className="menu-list">
-          {[
-            "Dashboard",
-            "Edit Profile",
-            "My Appointments",
-            "Prescriptions",
-            "Doctors List",
-            "Health Records",
-            "Settings",
-          ].map((menu) => (
+          {["Dashboard", "Edit Profile", "My Appointments", "Prescriptions", "Doctors List", "Health Records", "Settings", "Feedback"].map((menu) => (
             <li
               key={menu}
               className={
@@ -107,12 +162,47 @@ const PatientDashboard = () => {
               <span>Welcome {userEmail || "Loading..."}</span>
             </li>
             <li>
+              <div className="notification-container">
+                <button
+                  className="notification-bell"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                >
+                  🔔
+                  {notifications.length > 0 && (
+                    <span className="notification-badge">
+                      {notifications.length}
+                    </span>
+                  )}
+                </button>
+                {showNotifications && (
+                  <div className="notification-dropdown">
+                    {notifications.length > 0 ? (
+                      notifications.map((notification) => (
+                        <div key={notification.id} className="notification-item">
+                          <p>{notification.message}</p>
+                          {notification.status !== "READ" && (
+                            <button
+                              onClick={() => markAsRead(notification.id)}
+                            >
+                              Mark as Read
+                            </button>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p>No new notifications</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </li>
+            <li>
               <a href="/WelcomePage">Logout</a>
             </li>
           </ul>
         </div>
 
-        {/* Content */}
+        {/* Render based on selected menu */}
         <div className="cards-container">
           {selectedMenu === "Dashboard" && (
             <>
@@ -140,21 +230,11 @@ const PatientDashboard = () => {
             />
           )}
 
-          {selectedMenu === "Doctors List" && <DoctorList />} {/* Render Doctor List */}
+          {selectedMenu === "Doctors List" && <DoctorList />}
 
-          {selectedMenu === "My Appointments" && <AppointmentsList />} {/* Render Appointments List */}
+          {selectedMenu === "My Appointments" && <AppointmentsList />}
 
-          {/* Other Menus */}
-          {selectedMenu !== "Dashboard" &&
-            selectedMenu !== "Edit Profile" &&
-            selectedMenu !== "My Appointments" &&
-            selectedMenu !== "Doctors List" && (
-              <div className="dynamic-content">
-                <p>
-                  Showing details for: <strong>{selectedMenu}</strong>
-                </p>
-              </div>
-            )}
+          {selectedMenu === "Feedback" && <Feedback />}
         </div>
       </div>
 
@@ -187,7 +267,7 @@ const PatientDashboard = () => {
         <div
           style={{
             position: "fixed",
-            bottom: "90px", // Adjusted to be above the chatbot open button
+            bottom: "90px",
             right: "20px",
             zIndex: 1000,
           }}
