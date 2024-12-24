@@ -29,9 +29,9 @@
   color: #1abc9c;
 }
 
-/* 
-//new notification */
-/* .notification-container {
+
+
+.notification-container {
   position: relative;
 }
 
@@ -61,7 +61,7 @@
   background-color:white;
   border: 1px solid black;
   border-radius: 5px;
-  width: 250px;
+  width: 400px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 10;
 }
@@ -73,13 +73,14 @@
 
 .notification-item p {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
+  color: black;
 }
 
 .notification-item button {
-  font-size: 12px;
-  color: blue;
-  background: none;
+  font-size: 16px;
+  color: yellow;
+  background: green;
   border: none;
   cursor: pointer;
-} */
+}

@@ -1,13 +1,15 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import "./PatientDashboard.css";
 import EditPatientProfile from "../EditProfile/EditPatientProfile";
 import AppointmentsList from "../Appointment/AppointmentsList";
 import DoctorList from "../DoctorList/DoctorList";
 import Feedback from "../FeedbackList/Feedback";
 import Chatbot from "../Chatbot/Chatbot";
+import Prescription from "../YourPrescription/Prescription";
+import "./PatientDashboard.css";
 
 const PatientDashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState("Dashboard");
@@ -137,12 +139,10 @@ const PatientDashboard = () => {
           </p>
         </div>
         <ul className="menu-list">
-          {["Dashboard", "Edit Profile", "My Appointments", "Prescriptions", "Doctors List", "Health Records", "Settings", "Feedback"].map((menu) => (
+          {["Dashboard", "Edit Profile", "My Appointments", "Prescriptions", "Doctors List"].map((menu) => (
             <li
               key={menu}
-              className={
-                selectedMenu === menu ? "menu-item active" : "menu-item"
-              }
+              className={selectedMenu === menu ? "menu-item active" : "menu-item"}
               onClick={() => handleMenuClick(menu)}
             >
               {menu}
@@ -184,7 +184,7 @@ const PatientDashboard = () => {
                             <button
                               onClick={() => markAsRead(notification.id)}
                             >
-                              Mark as Read
+                              Mark As Read
                             </button>
                           )}
                         </div>
@@ -211,8 +211,8 @@ const PatientDashboard = () => {
                 <p>2</p>
               </div>
               <div className="card">
-                <h2>Health Records</h2>
-                <p>5 records</p>
+                <h2>My Appointments</h2>
+                <p>5</p>
               </div>
               <div className="card">
                 <h2>Prescriptions</h2>
@@ -232,9 +232,13 @@ const PatientDashboard = () => {
 
           {selectedMenu === "Doctors List" && <DoctorList />}
 
-          {selectedMenu === "My Appointments" && <AppointmentsList />}
+          {selectedMenu === "My Appointments" && (
+            <AppointmentsList setSelectedMenu={setSelectedMenu} />
+          )}
 
           {selectedMenu === "Feedback" && <Feedback />}
+
+          {selectedMenu === "Prescriptions" && <Prescription />}
         </div>
       </div>
 

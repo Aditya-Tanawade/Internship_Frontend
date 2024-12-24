@@ -20,7 +20,6 @@ const YourSchedule = () => {
       .get("http://localhost:8080/api/doctor/availability")
       .then((response) => {
         setAvailability(response.data); // Populate availability data
-        setLoading(false); // Stop loading
       })
       .catch((error) => {
         console.error("Error fetching availability:", error);

@@ -156,4 +156,62 @@
     text-align: center;
     margin-top: 20px;
   }
+
+
+
+  
+.notification-container {
+  position: relative;
+}
+
+.notification-bell {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background-color: red;
+  color: black;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 12px;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color:white;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-item p {
+  margin: 0;
+  font-size: 16px;
+  color: black;
+}
+
+.notification-item button {
+  font-size: 16px;
+  color: yellow;
+  background: green;
+  border: none;
+  cursor: pointer;
+}
+
   

@@ -92,3 +92,19 @@
   color: #666;
   margin-top: 20px;
 }
+
+/* Download button styling */
+.downloadButton {
+  background-color: #8400ff;
+  color: white;
+  border: none;
+  padding: 5px 10px; /* Small button size */
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.downloadButton:hover {
+  background-color: #0056b3;
+}
