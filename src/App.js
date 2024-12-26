@@ -16,6 +16,7 @@ import FeedbackListHomePage from './components/UserDashboard/FeedbackList/Feedba
 import AddPrescription from './components/Dashborad/Prescription/AddPrescription';
 import Prescription from './components/UserDashboard/YourPrescription/Prescription';
 import Appointments from './components/UserDashboard/Appointment/AppointmentsList';
+import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 
 
 
@@ -43,13 +44,13 @@ function App() {
 
         <Route path="/doctor-dashboard" element={<DoctorDashboard />}/>
 
-        {/* <Route path="/admin-dashboard" element={<AdminDashboard />}/> */}
+        <Route path="/admin-dashboard" element={<AdminDashboard />}/>
 
         <Route path="/add-prescription" element={<AddPrescription />} />
 
         <Route path="/appointments" element={<Appointments />} />
         
-        <Route path="/prescriptions/:appointmentId" element={<Prescription />} />
+        <Route path="/prescription" element={<Prescription />} />
 
 
         <Route path="/edit-profile" element={<EditProfile />} />

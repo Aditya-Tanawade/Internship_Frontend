@@ -15,17 +15,24 @@ const YourSchedule = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    // Fetch doctor's availability from backend
+    // Fetch the doctor's email first
     axios
-      .get("http://localhost:8080/api/doctor/availability")
+      .get("http://localhost:8080/api/doctor/get-welcome-email")
+      .then((response) => {
+        // Now fetch the availability using the email
+        return axios.get(
+          `http://localhost:8080/api/doctor/availability?email=${response.data.email}`
+        );
+      })
       .then((response) => {
         setAvailability(response.data); // Populate availability data
+        setLoading(false); // Stop loading
       })
       .catch((error) => {
-        console.error("Error fetching availability:", error);
+        console.error("Error fetching data:", error);
         setLoading(false); // Stop loading even on error
       });
-  }, []);
+  }, []); // This will run only once when the component mounts
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -82,8 +89,7 @@ const YourSchedule = () => {
   // Handle cancel edit
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setErrors({});
-    // Optionally, reset the form to initial values if needed
+    setErrors({}); // Reset any validation errors
   };
 
   if (loading) {
@@ -94,7 +100,7 @@ const YourSchedule = () => {
     <div className="schedule-container">
       <h2>Set Your Available Dates</h2>
       {successMessage && <div className="success-message">{successMessage}</div>}
-      
+
       {!isEditing ? (
         <div>
           <p>

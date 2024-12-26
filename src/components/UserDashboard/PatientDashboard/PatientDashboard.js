@@ -207,16 +207,16 @@ const PatientDashboard = () => {
           {selectedMenu === "Dashboard" && (
             <>
               <div className="card">
-                <h2>Upcoming Appointments</h2>
+                <h2>Appointments</h2>
                 <p>2</p>
               </div>
               <div className="card">
-                <h2>My Appointments</h2>
-                <p>5</p>
+                <h2>Upcomming Appointments</h2>
+                <p>2</p>
               </div>
               <div className="card">
                 <h2>Prescriptions</h2>
-                <p>8 prescriptions</p>
+                <p>1</p>
               </div>
             </>
           )}
