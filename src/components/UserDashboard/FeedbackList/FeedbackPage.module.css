@@ -1,0 +1,62 @@
+/* FeedbackPage.module.css */
+.feedback-page {
+  /* Add general styling for the feedback form */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feedback-page label {
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.feedback-page input,
+.feedback-page textarea,
+.feedback-page select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.feedback-page button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.feedback-page button:hover {
+  background-color: #0056b3;
+}
+
+/* Star rating styles */
+.feedback-page .stars {
+  display: flex;
+  justify-content: start;
+}
+
+.feedback-page .star {
+  font-size: 30px;
+  color: lightgray;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.feedback-page .star.filled {
+  color: gold;
+}

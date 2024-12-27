@@ -6,7 +6,7 @@ import { Stomp } from "@stomp/stompjs";
 import EditPatientProfile from "../EditProfile/EditPatientProfile";
 import AppointmentsList from "../Appointment/AppointmentsList";
 import DoctorList from "../DoctorList/DoctorList";
-import Feedback from "../FeedbackList/Feedback";
+import FeedbackPage from "../FeedbackList/FeedbackPage"
 import Chatbot from "../Chatbot/Chatbot";
 import Prescription from "../YourPrescription/Prescription";
 import "./PatientDashboard.css";
@@ -16,6 +16,9 @@ const PatientDashboard = () => {
   const [userEmail, setUserEmail] = useState("");
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [pendingAppointmentsCount, setPendingAppointmentsCount] = useState(0);
+  const [completedAppointmentsCount, setCompletedAppointmentsCount] = useState(0);
+  const [prescriptionsCount, setPrescriptionsCount] = useState(0);
   const [userProfile, setUserProfile] = useState({
     patientName: "",
     mobileNo: "",
@@ -52,6 +55,37 @@ const PatientDashboard = () => {
         console.error("Error fetching profile:", error);
       });
   };
+
+
+  const fetchPendingAppointmentsCount = () => {
+    axios
+      .get("http://localhost:8080/api/patient/pending-appointments-count")
+      .then((response) => {
+        setPendingAppointmentsCount(response.data.count || 0);
+      })
+      .catch((error) => {
+        console.error("Error fetching pending appointments count:", error);
+      });
+  };
+
+  // Fetch the count of completed appointments
+  const fetchCompletedAppointmentsCount = () => {
+    axios
+      .get("http://localhost:8080/api/patient/completed-appointments-count")
+      .then((response) => {
+        setCompletedAppointmentsCount(response.data.count || 0);
+        // Since prescriptions count is same as completed appointments count
+        setPrescriptionsCount(response.data.count || 0);
+      })
+      .catch((error) => {
+        console.error("Error fetching completed appointments count:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchPendingAppointmentsCount();
+    fetchCompletedAppointmentsCount();
+  }, []);
 
   // Fetch unread notifications
   const fetchNotifications = useCallback(() => {
@@ -139,7 +173,7 @@ const PatientDashboard = () => {
           </p>
         </div>
         <ul className="menu-list">
-          {["Dashboard", "Edit Profile", "My Appointments", "Prescriptions", "Doctors List"].map((menu) => (
+          {["Dashboard", "Edit Profile", "My Appointments", "Doctors List"].map((menu) => (
             <li
               key={menu}
               className={selectedMenu === menu ? "menu-item active" : "menu-item"}
@@ -207,17 +241,17 @@ const PatientDashboard = () => {
           {selectedMenu === "Dashboard" && (
             <>
               <div className="card">
-                <h2>Appointments</h2>
-                <p>2</p>
+                <h2>Pending Appointments</h2>
+                <p>{pendingAppointmentsCount}</p>
               </div>
               <div className="card">
-                <h2>Upcomming Appointments</h2>
-                <p>2</p>
+                <h2>Completed Appointments</h2>
+                <p>{completedAppointmentsCount}</p>
               </div>
               <div className="card">
                 <h2>Prescriptions</h2>
-                <p>1</p>
-              </div>
+                <p>{prescriptionsCount}</p>
+                  </div>
             </>
           )}
 
@@ -236,7 +270,7 @@ const PatientDashboard = () => {
             <AppointmentsList setSelectedMenu={setSelectedMenu} />
           )}
 
-          {selectedMenu === "Feedback" && <Feedback />}
+          {selectedMenu === "Feedback" && <FeedbackPage />}
 
           {selectedMenu === "Prescriptions" && <Prescription />}
         </div>

@@ -17,6 +17,7 @@ import AddPrescription from './components/Dashborad/Prescription/AddPrescription
 import Prescription from './components/UserDashboard/YourPrescription/Prescription';
 import Appointments from './components/UserDashboard/Appointment/AppointmentsList';
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
+import FeedbackPage from './components/UserDashboard/FeedbackList/FeedbackPage';
 
 
 
@@ -64,6 +65,10 @@ function App() {
 
         <Route path="/feedback-list" element={<FeedbackListHomePage />} /> 
 
+        {/* <Route path="/feedback" element={<FeedbackPage />} />  */}
+
+
+        <Route path="/feedback/:appointmentId" element={<FeedbackPage />} />  {/* Use dynamic route for appointmentId */}
 
 
 

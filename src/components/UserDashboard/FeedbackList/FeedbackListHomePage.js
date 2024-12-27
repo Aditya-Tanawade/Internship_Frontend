@@ -5,7 +5,6 @@ import './FeedbackListHomePage.css';
 const FeedbackListHomePage = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [error, setError] = useState(null);
-  const [likes, setLikes] = useState({}); // To keep track of likes for each feedback
 
   useEffect(() => {
     // Fetch all feedbacks when the component mounts
@@ -21,17 +20,38 @@ const FeedbackListHomePage = () => {
 
   // Handle like button click
   const handleLikeClick = (feedbackId) => {
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [feedbackId]: (prevLikes[feedbackId] || 0) + 1, // Increment the like count
-    }));
+    axios
+      .post(`http://localhost:8080/feedback/like/${feedbackId}`)
+      .then((response) => {
+        // Update the feedback list with the new like count
+        const updatedFeedbacks = feedbacks.map((feedback) =>
+          feedback.id === feedbackId ? { ...feedback, likes: feedback.likes + 1 } : feedback
+        );
+        setFeedbacks(updatedFeedbacks);
+      })
+      .catch((error) => {
+        console.error("Error liking feedback:", error);
+      });
+  };
+
+  // Generate stars based on rating
+  const renderStars = (rating) => {
+    let stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} className={`star ${i <= rating ? 'filled' : ''}`}>
+          ★
+        </span>
+      );
+    }
+    return stars;
   };
 
   return (
     <div className="feedback-list-container">
       {/* Header Section */}
       <div className="feedback-header">
-        
+        <h2>User Feedback</h2>
         <p>Here you can see all the feedback provided by users</p>
       </div>
 
@@ -43,8 +63,12 @@ const FeedbackListHomePage = () => {
           feedbacks.map((feedback, index) => (
             <div className="feedback-item" key={index}>
               <div className="feedback-item-header">
-                <p><strong>Doctor:</strong> {feedback.doctorEmail}</p>
-                <p><strong>Rating:</strong> {feedback.rating}</p>
+                <p><strong>Feedback From </strong> {feedback.patientName}</p>
+                <p><strong>Doctor:</strong> {feedback.doctorName}</p>
+              </div>
+              <div className="feedback-rating">
+                <strong>Rating:</strong>
+                <div className="stars">{renderStars(feedback.rating)}</div>
               </div>
               <div className="feedback-comment">
                 <p><strong>Comment:</strong></p>
@@ -54,7 +78,7 @@ const FeedbackListHomePage = () => {
                 <button 
                   className="like-button" 
                   onClick={() => handleLikeClick(feedback.id)}>
-                    Like ({likes[feedback.id] || 0})
+                    Like ({feedback.likes})
                 </button>
               </div>
             </div>

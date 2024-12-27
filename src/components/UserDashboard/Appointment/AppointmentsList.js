@@ -44,6 +44,11 @@ const Appointments = () => {
     navigate("/prescription");  // Navigate to prescription page
   };
 
+  const provideFeedback = (appointmentId) => {
+    // Navigate to the feedback page where the patient can provide feedback for the appointment
+    navigate(`/feedback/${appointmentId}`);
+  };
+
   return (
     <div className={styles.appointmentsContainer}>
       <h2>My Appointments</h2>
@@ -87,12 +92,20 @@ const Appointments = () => {
                     </button>
                   )}
                   {appointment.status === "COMPLETED" && (
-                    <button
-                      onClick={() => downloadPrescription(appointment.id)}
-                      className={styles.downloadButton}
-                    >
-                      Prescription
-                    </button>
+                    <>
+                      <button
+                        onClick={() => downloadPrescription(appointment.id)}
+                        className={styles.downloadButton}
+                      >
+                        Prescription
+                      </button>
+                      <button
+                        onClick={() => provideFeedback(appointment.id)}
+                        className={styles.feedbackButton}
+                      >
+                        Feedback
+                      </button>
+                    </>
                   )}
                 </td>
               </tr>
@@ -107,7 +120,3 @@ const Appointments = () => {
 };
 
 export default Appointments;
-
-
-
-
