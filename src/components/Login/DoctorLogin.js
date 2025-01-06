@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,31 +8,11 @@ const DoctorLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false); // State for Remember Me checkbox
+  const [passwordError, setPasswordError] = useState(''); // For inline password validation
+  const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me"
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if email and password are saved in localStorage
-    const savedEmail = localStorage.getItem('email');
-    const savedPassword = localStorage.getItem('password');
-    if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setPassword(savedPassword);
-      setRememberMe(true); // If saved, remember user is checked
-    }
-
-    // Clear the error message after 3 seconds
-    if (error) {
-      const timer = setTimeout(() => {
-        setError('');
-        setIsPasswordInvalid(false);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-
-    // Add background image via JavaScript
     const bodyElement = document.body;
     bodyElement.style.backgroundImage = "url('assets/img/doctorBgg.png')";
     bodyElement.style.backgroundSize = 'cover';
@@ -43,7 +24,6 @@ const DoctorLogin = () => {
     bodyElement.style.overflow = 'hidden';
 
     return () => {
-      // Cleanup background styles when component unmounts
       bodyElement.style.backgroundImage = '';
       bodyElement.style.backgroundSize = '';
       bodyElement.style.backgroundRepeat = '';
@@ -53,30 +33,48 @@ const DoctorLogin = () => {
       bodyElement.style.padding = '';
       bodyElement.style.overflow = '';
     };
-  }, [error]);
+  }, []);
+
+  const validateInputs = () => {
+    if (password.length < 6) {
+      setPasswordError('Password must be at least 6 characters long');
+      return false;
+    }
+    setPasswordError(''); // Clear password error if validation passes
+    return true;
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
+    // Check if the email or password is empty
+    if (!email || !password) {
+      if (!email) {
+        setError('Email cannot be empty.');
+      }
+      if (!password) {
+        setPasswordError('Password cannot be empty.');
+      }
+      return;
+    }
+  
+    // Reset error messages before making the request
+    setError('');
+    setPasswordError('');
+  
+    if (!validateInputs()) {
+      return;
+    }
+  
     try {
       const response = await axios.post('http://localhost:8080/api/auth/login', {
         email: email,
         password: password,
       });
-
+  
       if (response.data.status === 'OK') {
         if (response.data.message === 'Doctor login successful') {
           alert('Doctor login successful!');
-
-          // Save credentials in localStorage if Remember Me is checked
-          if (rememberMe) {
-            localStorage.setItem('email', email);
-            localStorage.setItem('password', password);
-          } else {
-            localStorage.removeItem('email');
-            localStorage.removeItem('password');
-          }
-
           navigate('/doctor-dashboard');
         } else {
           setError('Unauthorized role. Only Doctors can log in.');
@@ -87,8 +85,7 @@ const DoctorLogin = () => {
     } catch (err) {
       if (err.response) {
         if (err.response.status === 401) {
-          setError('Unauthorized: Invalid email or password.');
-          setIsPasswordInvalid(true);
+          setError('Unauthorized : Invalid email or password.');
         } else {
           setError(err.response.data.message || 'An error occurred.');
         }
@@ -98,6 +95,7 @@ const DoctorLogin = () => {
       console.error(err);
     }
   };
+  
 
   const handleForgotPassword = () => {
     navigate('/forgot-password');
@@ -105,10 +103,6 @@ const DoctorLogin = () => {
 
   const handleRegister = () => {
     navigate('/registration');
-  };
-
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
   };
 
   return (
@@ -137,8 +131,8 @@ const DoctorLogin = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="Enter your password"
-            className={isPasswordInvalid ? 'invalid-password' : ''}
           />
+          {passwordError && <small className="error-message">{passwordError}</small>}
         </div>
 
         <div className="remember-forgot-row">
@@ -147,7 +141,7 @@ const DoctorLogin = () => {
               type="checkbox"
               id="rememberMe"
               checked={rememberMe}
-              onChange={handleRememberMeChange}
+              onChange={() => setRememberMe(!rememberMe)}
             />
             <label htmlFor="rememberMe">Remember Me</label>
           </div>
@@ -173,3 +167,4 @@ const DoctorLogin = () => {
 };
 
 export default DoctorLogin;
+

@@ -11,10 +11,10 @@
 }
 
 .home-container .main-nav {
-  position: absolute;
+  position: fixed;  /* Keep it fixed at the top of the page */
   top: 0px;
-  left: 0px;
-  width: 100%;
+  right: 0;  /* Shift the navbar to the right */
+  width: auto; /* Let the navbar take its own width */
   display: flex;
   padding: 1%;
   background-color: #233852;

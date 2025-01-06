@@ -64,8 +64,9 @@ const DoctorList = () => {
           <div className="doctor-card" key={index}>
             <div className="doctor-image-container">
               <img
+                
                 src={`assets/img/${
-                  doctor.email.includes("male") ? "femaledoctor.png" : "maledoctor.png"
+                  doctor.gender === "Female" ? "femaledoctor.png" : "maledoctor.png" //change here
                 }`}
                 alt="Doctor"
                 className="doctor-image"
@@ -76,10 +77,12 @@ const DoctorList = () => {
               <p><strong>Email:</strong> {doctor.email}</p>
               <p><strong>Speciality:</strong> {doctor.speciality || "Not specified"}</p>
               <p><strong>Location:</strong> {doctor.location || "Not specified"}</p>
+              <p><strong>Gender:</strong> {doctor.gender || "Not specified"}</p> {/* Add this line */}
               <p><strong>Mobile:</strong> {doctor.mobileNo || "Not provided"}</p>
               <p><strong>Hospital:</strong> {doctor.hospitalName || "Not specified"}</p>
               <p><strong>Charge per Visit:</strong> ₹{doctor.chargedPerVisit || 0}</p>
-
+              
+              
               {doctor.availability ? (
                 <div className="doctor-availability">
                   <p><strong>Available From:</strong> {doctor.availability.availableFromDate}</p>

@@ -19,7 +19,11 @@ import Appointments from './components/UserDashboard/Appointment/AppointmentsLis
 import AdminDashboard from './components/AdminDashboard/AdminDashboard';
 import FeedbackPage from './components/UserDashboard/FeedbackList/FeedbackPage';
 
-
+// import UpdatePatient from "./components/AdminDashboard/UpdatePatient";
+import EditPatientProfile from "./components/AdminDashboard/EditPatientProfile";
+import PatientList from './components/AdminDashboard/PatientList';
+import EditDoctorProfile from "./components/AdminDashboard/EditDoctorProfile";
+import DoctorList from './components/AdminDashboard/DoctorList';
 
 
 
@@ -70,6 +74,11 @@ function App() {
 
         <Route path="/feedback/:appointmentId" element={<FeedbackPage />} />  {/* Use dynamic route for appointmentId */}
 
+        <Route path="/patient-list" element={<PatientList />} />
+        <Route path="/edit-patient/:email" element={<EditPatientProfile />} />
+
+        <Route path="/doctor-list" element={<DoctorList />} />
+        <Route path="/edit-doctor/:email" element={<EditDoctorProfile />} />
 
 
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import './Home.css';
+import Chatbot from './Chatbot/Chatbot'; // Import the Chatbot component
 
 const Home = () => {
   return (
@@ -55,6 +56,9 @@ const Home = () => {
       <div className='foot'>
         <footer> <p>© 2024 E-Doctor. All rights reserved.</p></footer>
       </div>
+
+      {/* Add the Chatbot component */}
+      <Chatbot />
     </div>
   );
 };

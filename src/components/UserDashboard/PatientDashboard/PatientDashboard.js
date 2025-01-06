@@ -7,7 +7,6 @@ import EditPatientProfile from "../EditProfile/EditPatientProfile";
 import AppointmentsList from "../Appointment/AppointmentsList";
 import DoctorList from "../DoctorList/DoctorList";
 import FeedbackPage from "../FeedbackList/FeedbackPage"
-import Chatbot from "../Chatbot/Chatbot";
 import Prescription from "../YourPrescription/Prescription";
 import "./PatientDashboard.css";
 
@@ -27,7 +26,6 @@ const PatientDashboard = () => {
     age: "",
     address: "",
   });
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   const socketUrl = "http://localhost:8080/ws";
 
@@ -154,9 +152,7 @@ const PatientDashboard = () => {
     setSelectedMenu(menu);
   };
 
-  const toggleChatbot = () => {
-    setIsChatbotOpen(!isChatbotOpen);
-  };
+  
 
   return (
     <div className="dashboard-container">
@@ -276,43 +272,7 @@ const PatientDashboard = () => {
         </div>
       </div>
 
-      {/* Chatbot Icon */}
-      <div
-        className="chatbot-icon"
-        onClick={toggleChatbot}
-        style={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          cursor: "pointer",
-          backgroundColor: "#007bff",
-          color: "white",
-          borderRadius: "50%",
-          width: "60px",
-          height: "60px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "24px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        💬
-      </div>
-
-      {/* Chatbot Component */}
-      {isChatbotOpen && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "90px",
-            right: "20px",
-            zIndex: 1000,
-          }}
-        >
-          <Chatbot />
-        </div>
-      )}
+      
     </div>
   );
 };

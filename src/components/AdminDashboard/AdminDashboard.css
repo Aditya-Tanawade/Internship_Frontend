@@ -199,3 +199,83 @@
   color: #ecf0f1;
   margin-right: 20px; /* Add spacing for clarity */
 }
+
+/* new */
+
+h2 {
+  margin-bottom: 20px; /* Adds space after the heading */
+}
+
+.form-container {
+  margin-top: 20px; /* Adds space at the top of the form */
+}
+
+.form-group {
+  margin-bottom: 15px; /* Adds space between form fields */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+button {
+  padding: 10px 15px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+/* Center the form container in the middle of the viewport */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  padding: 20px;
+}
+
+.form {
+  width: 100%;
+  max-width: 600px; /* Limit the form width */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px; /* Adds space after the heading */
+}
+
+.form-group {
+  margin-bottom: 15px; /* Adds space between form fields */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px; /* Adds space between label and input */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 15px;
+  margin-top: 20px;
+  width: 100%;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #45a049;
+}

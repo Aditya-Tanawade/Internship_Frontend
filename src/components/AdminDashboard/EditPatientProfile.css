@@ -1,0 +1,48 @@
+
+.edit-doctor-container {
+  width: 200%; 
+  margin: 20px auto; 
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
+.edit-doctor-profile-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.edit-doctor-profile-form input,
+.edit-doctor-profile-form select,
+.edit-doctor-profile-form textarea {
+  width: 100%; 
+  box-sizing: border-box; 
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.edit-doctor-profile-form button {
+  width: 100%; 
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
+
+.edit-doctor-profile-form button:hover {
+  background-color: #0056b3;
+}
+

@@ -228,3 +228,54 @@
   color: #f44336;
   border: 2px solid #f44336;
 }
+
+
+/* Add these styles for error validation */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+input.error {
+  border: 1px solid red;
+  background-color: #ffe6e6; /* Light red background for error */
+}
+
+input:focus.error {
+  outline: none;
+  border-color: red;
+}
+
+input.error::placeholder {
+  color: #ff0000; /* Change placeholder color to red */
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}
+
+/* Add these styles for error validation */
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+input.error {
+  border: 1px solid red;
+  background-color: #ffe6e6; /* Light red background for error */
+}
+
+input:focus.error {
+  outline: none;
+  border-color: red;
+}
+
+input.error::placeholder {
+  color: #ff0000; /* Change placeholder color to red */
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}

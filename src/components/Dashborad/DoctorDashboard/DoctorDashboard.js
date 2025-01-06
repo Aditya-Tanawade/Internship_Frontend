@@ -177,12 +177,30 @@ const DoctorDashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="sidebar">
-        <div className="profile-section">
+        {/* <div className="profile-section">
           <img src="assets/img/maledoctor.png" alt="Doctor" className="profile-picture" />
           <p className="doctor-name">
             {doctorProfile.doctorName || "Loading Name..."}
           </p>
-        </div>
+        </div> */}
+
+<div className="profile-section">
+  <img
+    src={
+      doctorProfile.gender === "Male"
+        ? "assets/img/maledoctor.png"
+        : doctorProfile.gender === "Female"
+        ? "assets/img/femaledoctor.png"
+        : "assets/img/maledoctor.png" // Fallback if gender is not specified
+    }
+    alt="Doctor"
+    className="profile-picture"
+  />
+  <p className="doctor-name">
+    {doctorProfile.doctorName || "Loading Name..."}
+  </p>
+</div>
+
         <ul className="menu-list">
           {[
             "Dashboard",
